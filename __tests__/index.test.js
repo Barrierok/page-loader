@@ -4,7 +4,7 @@ import path from 'path';
 import os from 'os';
 
 import loadPage from '../src';
-import { createNameFromURL } from '../src/utils';
+import { getNameFromURL } from '../src/utils';
 import { types } from '../dist/utils';
 
 nock.disableNetConnect();
@@ -53,14 +53,14 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
-  outputFilesDir = path.join(tempDir, createNameFromURL(requestUrl, types.sourceDir));
+  outputFilesDir = path.join(tempDir, getNameFromURL(requestUrl, types.sourceDir));
 });
 
 test.each([
-  [fileTypes.html, createNameFromURL(requestUrl, types.htmlFile)],
-  [fileTypes.css, createNameFromURL(mappingPath.css)],
-  [fileTypes.script, createNameFromURL(mappingPath.script)],
-  [fileTypes.image, createNameFromURL(mappingPath.image)],
+  [fileTypes.html, getNameFromURL(requestUrl, types.htmlFile)],
+  [fileTypes.css, getNameFromURL(mappingPath.css)],
+  [fileTypes.script, getNameFromURL(mappingPath.script)],
+  [fileTypes.image, getNameFromURL(mappingPath.image)],
 ])('download correct %s file', async (type, filePath) => {
   await loadPage(requestUrl, tempDir);
 
