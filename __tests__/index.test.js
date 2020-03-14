@@ -7,45 +7,48 @@ import loadPage from '../src';
 import { createNameFromURL } from '../src/utils';
 import { types } from '../dist/utils';
 
-let tempDir;
-let outputFilesDir;
-let originalHtml;
+nock.disableNetConnect();
+
+let tempDir = '';
+let outputFilesDir = '';
+let originalHtml = '';
 const requestUrl = 'http://lunar-sea-surgel.sh';
 const pathFixturesDir = path.join(__dirname, '__fixtures__');
+let mappingResult = {};
 
-let expectedCss;
-let expectedHtml;
-let expectedScript;
-let expectedImage;
+const fileTypes = {
+  html: 'html', css: 'css', script: 'script', image: 'image',
+};
 
 const mappingPath = {
-  html: '/',
-  css: '/styles/style.css',
-  script: '/scripts/index.js',
-  image: '/images/banner.png',
+  [fileTypes.html]: '/',
+  [fileTypes.css]: '/styles/style.css',
+  [fileTypes.script]: '/scripts/index.js',
+  [fileTypes.image]: '/images/banner.png',
 };
 
 const readFile = (dir, pathToFile) => fs.readFile(path.join(dir, pathToFile), 'utf8');
 
-nock.disableNetConnect();
 beforeAll(async () => {
   originalHtml = await readFile(pathFixturesDir, 'index.html');
 
-  expectedHtml = await readFile(pathFixturesDir, 'changedIndex.html');
-  expectedCss = await readFile(pathFixturesDir, mappingPath.css);
-  expectedScript = await readFile(pathFixturesDir, mappingPath.script);
-  expectedImage = await readFile(pathFixturesDir, mappingPath.image);
+  mappingResult = {
+    [fileTypes.html]: await readFile(pathFixturesDir, 'changedIndex.html'),
+    [fileTypes.css]: await readFile(pathFixturesDir, mappingPath.css),
+    [fileTypes.script]: await readFile(pathFixturesDir, mappingPath.script),
+    [fileTypes.image]: await readFile(pathFixturesDir, mappingPath.image),
+  };
 
   nock(requestUrl)
     .persist()
-    .get(mappingPath.html)
+    .get(mappingPath[fileTypes.html])
     .reply(200, originalHtml)
-    .get(mappingPath.css)
-    .reply(200, expectedCss)
-    .get(mappingPath.script)
-    .reply(200, expectedScript)
-    .get(mappingPath.image)
-    .reply(200, expectedImage);
+    .get(mappingPath[fileTypes.css])
+    .reply(200, mappingResult[fileTypes.css])
+    .get(mappingPath[fileTypes.script])
+    .reply(200, mappingResult[fileTypes.script])
+    .get(mappingPath[fileTypes.image])
+    .reply(200, mappingResult[fileTypes.image]);
 });
 
 beforeEach(async () => {
@@ -53,32 +56,18 @@ beforeEach(async () => {
   outputFilesDir = path.join(tempDir, createNameFromURL(requestUrl, types.sourceDir));
 });
 
-test('change link in html', async () => {
+test.each([
+  [fileTypes.html, createNameFromURL(requestUrl, types.htmlFile)],
+  [fileTypes.css, createNameFromURL(mappingPath.css)],
+  [fileTypes.script, createNameFromURL(mappingPath.script)],
+  [fileTypes.image, createNameFromURL(mappingPath.image)],
+])('download correct %s file', async (type, filePath) => {
   await loadPage(requestUrl, tempDir);
 
-  const changedHtml = await readFile(tempDir, createNameFromURL(requestUrl, types.htmlFile));
-  expect(changedHtml).toEqual(expectedHtml);
-});
+  const dirName = type === fileTypes.html ? tempDir : outputFilesDir;
 
-test('download correct css file', async () => {
-  await loadPage(requestUrl, tempDir);
-
-  const css = await readFile(outputFilesDir, createNameFromURL(mappingPath.css));
-  expect(css).toEqual(expectedCss);
-});
-
-test('download correct javascript file', async () => {
-  await loadPage(requestUrl, tempDir);
-
-  const script = await readFile(outputFilesDir, createNameFromURL(mappingPath.script));
-  expect(script).toEqual(expectedScript);
-});
-
-test('download correct image file', async () => {
-  await loadPage(requestUrl, tempDir);
-
-  const image = await readFile(outputFilesDir, createNameFromURL(mappingPath.image));
-  expect(image).toEqual(expectedImage);
+  const result = await readFile(dirName, filePath);
+  expect(result).toEqual(mappingResult[type]);
 });
 
 afterEach(async () => {
