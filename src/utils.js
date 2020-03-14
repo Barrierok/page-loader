@@ -19,7 +19,7 @@ export const types = {
   sourceFile: 'sourceFile',
 };
 
-export const createNameFromURL = (link, type = types.sourceFile) => {
+export const getNameFromURL = (link, type = types.sourceFile) => {
   const dispatcher = {
     [types.sourceDir]: (name) => `${name}_files`,
     [types.htmlFile]: (name) => `${name}.html`,

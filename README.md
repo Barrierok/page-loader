@@ -16,3 +16,6 @@ $ make test
 
 ## Example downloading resources
 [![asciicast](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT.svg)](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT)
+
+## Example with debug
+[![asciicast](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY.svg)](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY)

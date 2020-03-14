@@ -6,7 +6,7 @@ build:
 	npm run build
 
 test:
-	npm test
+	DEBUG=* npm test
 
 test-coverage:
 	npm test -- --coverage
