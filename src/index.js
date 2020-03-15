@@ -17,11 +17,11 @@ export default (requestUrl, outputDir) => axios.get(requestUrl)
     const newHtml = changeLinkInHTML(html, requestUrl);
     return fs.writeFile(path.join(outputDir, indexFileName), newHtml, 'utf-8')
       .then(() => {
-        log(`${indexFileName} file was created in ${outputDir}`);
+        log(`File ${indexFileName} was created in folder ${outputDir}`);
         return fs.mkdir(path.join(outputDir, sourceDirName));
       })
       .then(() => {
-        log(`${sourceDirName} dir was created in ${outputDir}`);
+        log(`Folder ${sourceDirName} was created in ${outputDir}`);
         return { html };
       });
   })
@@ -38,14 +38,20 @@ export default (requestUrl, outputDir) => axios.get(requestUrl)
         method: 'get',
         url: sourceUrl.toString(),
         responseType: 'stream',
-      }).then(({ data }) => {
+      }).then(({ data, status }) => {
+        if (status !== 200) {
+          throw new Error(`Resource ${link} was not loaded because response status: ${status}`);
+        }
         const sourceFileName = getNameFromURL(link);
         data.pipe(createWriteStream(path.join(outputDir, sourceDirName, sourceFileName)));
         return log(
-          `${sourceFileName} was download and written in dir ${path.join(outputDir, sourceDirName)}`,
+          `$Resource {sourceFileName} has been loaded and written to the folder ${path.join(outputDir, sourceDirName)}`,
         );
       });
     });
     return Promise.all(promises);
   })
-  .catch(console.error);
+  .catch((err) => {
+    log(err.message);
+    throw err;
+  });

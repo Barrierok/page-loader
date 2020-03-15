@@ -1,5 +1,6 @@
 import cheerio from 'cheerio';
 import path from 'path';
+import { uniq } from 'lodash';
 
 import { tags, getNameFromURL, types } from './utils';
 
@@ -38,5 +39,5 @@ export const getLinksFromHTML = (html, url) => {
       links.push(link);
     });
   });
-  return links;
+  return uniq(links);
 };
