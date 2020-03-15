@@ -2,6 +2,8 @@
 
 [![Node.js CI](https://github.com/Barrierok/backend-project-lvl3/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/Barrierok/backend-project-lvl3/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/5fc80315a4e596b52002/maintainability)](https://codeclimate.com/github/Barrierok/backend-project-lvl3/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/5fc80315a4e596b52002/test_coverage)](https://codeclimate.com/github/Barrierok/backend-project-lvl3/test_coverage)
 
+---
+
 ## Setup
 
 ```sh
@@ -14,11 +16,10 @@ $ make install
 $ make test
 ```
 
-#### Example downloading resources
-[![asciicast](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT.svg)](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT)
+### Example work package
+---
+[![asciicast](https://asciinema.org/a/N54cdAZ1kiTro79DTVwPIekjz.svg)](https://asciinema.org/a/N54cdAZ1kiTro79DTVwPIekjz)
 
-#### Example with debug
+### Example with debug
+---
 [![asciicast](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY.svg)](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY)
-
-#### Example with error handling
-[![asciicast](https://asciinema.org/a/ULwNkAHNJmgP1AqPqh10WQ8DN.svg)](https://asciinema.org/a/ULwNkAHNJmgP1AqPqh10WQ8DN)
