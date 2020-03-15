@@ -9,6 +9,7 @@ export default () => {
     .arguments('<url>')
     .action((url) => {
       loadPage(url, program.output)
+        .then((fileName) => console.log(`Page was downloaded as ${fileName}`))
         .catch((err) => {
           console.log(err.message);
           process.exit(1);

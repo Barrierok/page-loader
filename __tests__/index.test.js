@@ -71,7 +71,9 @@ test.each([
 });
 
 test('application error handling', async () => {
-  await expect(loadPage(requestUrl, 'output')).rejects.toThrow("ENOENT: no such file or directory, open 'output/lunar-sea-surgel-sh.html'");
+  await expect(loadPage(requestUrl, 'output')).rejects.toThrow(
+    "ENOENT: no such file or directory, mkdir 'output/lunar-sea-surgel-sh_files'",
+  );
 });
 
 afterEach(async () => {
