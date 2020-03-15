@@ -4,8 +4,7 @@ import path from 'path';
 import os from 'os';
 
 import loadPage from '../src';
-import { getNameFromURL } from '../src/utils';
-import { types } from '../dist/utils';
+import { getNameFromURL, types } from '../src/utils';
 
 nock.disableNetConnect();
 
@@ -53,7 +52,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
-  outputFilesDir = path.join(tempDir, getNameFromURL(requestUrl, types.sourceDir));
+  outputFilesDir = path.join(tempDir, getNameFromURL(requestUrl, types.resourceDir));
 });
 
 test.each([
