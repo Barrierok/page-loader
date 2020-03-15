@@ -14,8 +14,11 @@ $ make install
 $ make test
 ```
 
-## Example downloading resources
+#### Example downloading resources
 [![asciicast](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT.svg)](https://asciinema.org/a/4qfrNW0twsOscSFTu1Kij6iOT)
 
-## Example with debug
+#### Example with debug
 [![asciicast](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY.svg)](https://asciinema.org/a/K3IzrLqMAYwjtnanICfa25mwY)
+
+#### Example with error handling
+[![asciicast](https://asciinema.org/a/ULwNkAHNJmgP1AqPqh10WQ8DN.svg)](https://asciinema.org/a/ULwNkAHNJmgP1AqPqh10WQ8DN)

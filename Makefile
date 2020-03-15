@@ -6,7 +6,7 @@ build:
 	npm run build
 
 test:
-	DEBUG=* npm test
+	DEBUG=page-loader npm test
 
 test-coverage:
 	npm test -- --coverage

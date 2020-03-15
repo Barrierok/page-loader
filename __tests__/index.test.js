@@ -70,6 +70,12 @@ test.each([
   expect(result).toEqual(mappingResult[type]);
 });
 
+test('application error handling', async () => {
+  await expect(loadPage(requestUrl, 'output')).rejects.toThrow(
+    "ENOENT: no such file or directory, mkdir 'output/lunar-sea-surgel-sh_files'",
+  );
+});
+
 afterEach(async () => {
   await fs.rmdir(tempDir, { recursive: true });
 });

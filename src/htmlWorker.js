@@ -1,11 +1,12 @@
 import cheerio from 'cheerio';
 import path from 'path';
+import { uniq } from 'lodash';
 
 import { tags, getNameFromURL, types } from './utils';
 
 export const changeLinkInHTML = (html, url) => {
   const $ = cheerio.load(html);
-  const sourceDir = getNameFromURL(url, types.sourceDir);
+  const resourceDir = getNameFromURL(url, types.resourceDir);
 
   const { origin } = new URL(url);
   Object.entries(tags).forEach(([key, attribute]) => {
@@ -16,7 +17,7 @@ export const changeLinkInHTML = (html, url) => {
       const { host } = new URL(link, origin);
       if (!origin.includes(host)) return;
 
-      $(el).attr(attribute, path.join(sourceDir, getNameFromURL(link)));
+      $(el).attr(attribute, path.join(resourceDir, getNameFromURL(link)));
     });
   });
   return $.html();
@@ -38,5 +39,5 @@ export const getLinksFromHTML = (html, url) => {
       links.push(link);
     });
   });
-  return links;
+  return uniq(links);
 };

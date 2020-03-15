@@ -15,15 +15,15 @@ export const getKebabName = (link) => {
 
 export const types = {
   htmlFile: 'htmlFile',
-  sourceDir: 'sourceDir',
-  sourceFile: 'sourceFile',
+  resourceDir: 'sourceDir',
+  resourceFile: 'sourceFile',
 };
 
-export const getNameFromURL = (link, type = types.sourceFile) => {
+export const getNameFromURL = (link, type = types.resourceFile) => {
   const dispatcher = {
-    [types.sourceDir]: (name) => `${name}_files`,
+    [types.resourceDir]: (name) => `${name}_files`,
     [types.htmlFile]: (name) => `${name}.html`,
-    [types.sourceFile]: (name) => {
+    [types.resourceFile]: (name) => {
       const withoutExtname = name.slice(0, name.lastIndexOf('-'));
       return `${withoutExtname}${path.extname(link)}`;
     },
