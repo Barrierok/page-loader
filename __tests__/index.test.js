@@ -11,8 +11,9 @@ nock.disableNetConnect();
 let tempDir = '';
 let outputFilesDir = '';
 let originalHtml = '';
-const requestUrl = 'http://lunar-sea-surgel.sh';
-const pathFixturesDir = path.join(__dirname, '__fixtures__');
+const url = new URL('http://lunar-sea-surgel.sh');
+const requestUrl = url.toString();
+const pathFixturesDir = path.join(__dirname, '..', '__fixtures__');
 let mappingResult = {};
 
 const fileTypes = {
@@ -27,6 +28,8 @@ const mappingPath = {
 };
 
 const readFile = (dir, pathToFile) => fs.readFile(path.join(dir, pathToFile), 'utf8');
+
+const prepareUrl = (pathname, origin) => new URL(pathname, origin).toString();
 
 beforeAll(async () => {
   originalHtml = await readFile(pathFixturesDir, 'index.html');
@@ -57,9 +60,9 @@ beforeEach(async () => {
 
 test.each([
   [fileTypes.html, getNameFromURL(requestUrl, types.htmlFile)],
-  [fileTypes.css, getNameFromURL(mappingPath.css)],
-  [fileTypes.script, getNameFromURL(mappingPath.script)],
-  [fileTypes.image, getNameFromURL(mappingPath.image)],
+  [fileTypes.css, getNameFromURL(prepareUrl(mappingPath.css, url.origin))],
+  [fileTypes.script, getNameFromURL(prepareUrl(mappingPath.script, url.origin))],
+  [fileTypes.image, getNameFromURL(prepareUrl(mappingPath.image, url.origin))],
 ])('download correct %s file', async (type, filePath) => {
   await loadPage(requestUrl, tempDir);
 
@@ -70,9 +73,7 @@ test.each([
 });
 
 test('application error handling', async () => {
-  await expect(loadPage(requestUrl, 'output')).rejects.toThrow(
-    "ENOENT: no such file or directory, mkdir 'output/lunar-sea-surgel-sh_files'",
-  );
+  await expect(loadPage(requestUrl, 'output')).rejects.toMatchSnapshot();
 });
 
 afterEach(async () => {

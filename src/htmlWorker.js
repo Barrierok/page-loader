@@ -14,10 +14,11 @@ export const changeLinkInHTML = (html, url) => {
       const link = $(el).attr(attribute);
       if (!link) return;
 
-      const { host } = new URL(link, origin);
-      if (!origin.includes(host)) return;
+      const preparedUrl = new URL(link, origin);
+      if (!origin.includes(preparedUrl.host)) return;
 
-      $(el).attr(attribute, path.join(resourceDir, getNameFromURL(link)));
+      const newPath = path.join(resourceDir, getNameFromURL(preparedUrl.toString()));
+      $(el).attr(attribute, newPath);
     });
   });
   return $.html();
@@ -36,7 +37,7 @@ export const getLinksFromHTML = (html, url) => {
       const preparedUrl = new URL(link, origin);
       if (!origin.includes(preparedUrl.host)) return;
 
-      links.push(link);
+      links.push(preparedUrl.toString());
     });
   });
   return uniq(links);
