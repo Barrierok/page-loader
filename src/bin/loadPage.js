@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import startUtility from '../utility';
+import startUtility from '../cli';
 
 startUtility();
