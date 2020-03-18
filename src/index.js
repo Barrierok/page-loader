@@ -25,14 +25,12 @@ const loadReresources = (html, requestUrl, resourceDir) => {
   const links = getLinksFromHTML(html, requestUrl);
   log(`Links from HTML document: ${links}`);
 
-  const promises = links.map((link) => (
+  const data = links.map((link) => (
     { title: `${link}`, task: () => loadReresource(link, resourceDir) }
   ));
 
-  return Promise.all(promises).then((data) => {
-    const tasks = new Listr(data, { concurrent: true, exitOnError: false });
-    tasks.run();
-  });
+  const tasks = new Listr(data, { concurrent: true, exitOnError: false });
+  return tasks.run();
 };
 
 export default (requestUrl, outputDir) => axios.get(requestUrl)
